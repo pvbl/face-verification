@@ -1,0 +1,82 @@
+{
+  "required": [
+    "features",
+    "features_drop_test",
+    "use_sales_filter",
+    "algorithm"
+  ],
+  "properties": {
+    "features": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "features_drop_test": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "string"
+      }
+    },
+    "use_sales_filter": {
+      "type": "boolean"
+    },
+    "features_config": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "function_name"
+        ],
+        "properties": {
+          "function_name": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "algorithm": {
+      "type": "object",
+      "required": [
+          "algorithm_name",
+          "algorithm_params"
+        ],
+      "properties": {
+        "algorithm_name": {
+          "type": "string"
+        },
+        "algorithm_params": {
+          "type": "object"
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "use_sales_filter": {
+          "enum": [
+            true
+          ]
+        }
+      },
+      "sales_filter_value": {
+        "type": "number"
+      },
+      "required": [
+        "sales_filter_value"
+      ]
+    },
+    {
+      "properties": {
+        "use_sales_filter": {
+          "enum": [
+            false
+          ]
+        }
+      }
+    }
+  ]
+}

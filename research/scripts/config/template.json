@@ -1,0 +1,31 @@
+{
+  "features": [
+    "feature_1",
+    "feature_2"
+  ],
+  "features_drop_test": [
+    "feature_2"
+  ],
+  "use_sales_filter":true,
+    "sales_filter_value":2,
+
+    "features_config": {
+    "sales_baseline_last_year": {
+      "function_name": "feature_delay",
+      "delay": -364,
+      "base_feature": "total_articles",
+      "imputation": {
+        "function_name": "coalesce_imputation",
+        "impute_from": "sales_baseline_last_week"
+      }
+    }
+  },
+  "algorithm": {
+    "algorithm_name": "",
+    "algorithm_params": {
+    }
+  },
+  "categorical_features" : [
+    "feature_1"
+  ]
+}

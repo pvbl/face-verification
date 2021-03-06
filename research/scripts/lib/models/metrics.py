@@ -1,0 +1,7 @@
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+import numpy as np
+def eval_metrics(actual, pred):
+    rmse = np.sqrt(mean_squared_error(actual, pred))
+    mae = mean_absolute_error(actual, pred)
+    r2 = r2_score(actual, pred)
+    return {"rmse":rmse, "mae":mae, "r2":r2}

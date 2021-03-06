@@ -1,0 +1,31 @@
+name: ssnetworks
+
+conda_env: conda.yaml
+
+
+
+entry_points:
+  make_dataset:
+    parameters:
+    input_file: path
+    output_file: path
+    command: "python research/scripts/data/make_dataset.py"
+
+  make_features:
+    parameters:
+      ratings_csv: path
+      max_row_limit: {type: int, default: 100000}
+    command: "python research/scripts/data/make_dataset.py"
+
+  train_model:
+    parameters:
+      ratings_csv: path
+      max_row_limit: {type: int, default: 100000}
+    command: "python research/scripts/data/make_dataset.py"
+  main:
+    parameters:
+      als_max_iter: {type: int, default: 10}
+      keras_hidden_units: {type: int, default: 20}
+      max_row_limit: {type: int, default: 100000}
+    command: "python main.py --als-max-iter {als_max_iter} --keras-hidden-units {keras_hidden_units}
+                             --max-row-limit {max_row_limit}"
