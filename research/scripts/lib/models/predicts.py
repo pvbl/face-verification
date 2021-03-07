@@ -20,14 +20,16 @@ def predict_model(model,x0,x1,plot=True):
         imshow(torchvision.utils.make_grid(concatenated),'Dissimilarity: {0:.2f} label {1}'.format(euclidean_distance,""))
     return euclidean_distance
 
-def predict_over_dataset(model,siamese_dataset,x0,plot=False):
+def predict_over_dataset(model,siamese_dataset,x0,plot=False,cuda = False):
     disimilarities = []
     labels=[]
     for x1,l2 in siamese_dataset.iter_over_all_img_dataset():
         x1 = x1.unsqueeze(0)
         concatenated = torch.cat((x0,x1),0)
-        #output1,output2 = net(Variable(x0).cuda(),Variable(x1).cuda())
-        output1,output2 = model(Variable(x0),Variable(x1))
+        if cuda:
+            output1,output2 = model(Variable(x0).cuda(),Variable(x1).cuda())
+        else:
+            output1,output2 = model(Variable(x0),Variable(x1))
         euclidean_distance = F.pairwise_distance(output1, output2)
         print(euclidean_distance)
         disimilarity = euclidean_distance.item()

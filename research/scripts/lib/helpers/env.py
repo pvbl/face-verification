@@ -31,7 +31,9 @@ def load_config(file_path="config.ini"):
     dir_path = find_working_directory_from_env()
     file_path = path.join(dir_path,file_path)
     cf.read(file_path)
-    cf = add_abs_path_config(cf,dir_path)
+    sector = "FOLDERS"
+    if sector in cf.keys():
+        cf = add_abs_path_config(cf,dir_path,sector=sector)
     return cf
 
 def return_python_version():

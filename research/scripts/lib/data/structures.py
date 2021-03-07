@@ -3,10 +3,11 @@ from helpers.env import load_config
 import os
 
 CONFIG = load_config()
-DATA_RAW_DIR = CONFIG["FOLDERS"]["DATA_RAW_DIR"]
-DATA_INTERM_DIR = CONFIG["FOLDERS"]["DATA_INTERM_DIR"]
-DATA_EXT_DIR = CONFIG["FOLDERS"]["DATA_EXT_DIR"]
-DATA_PROCESSED_DIR = CONFIG["FOLDERS"]["DATA_PROCESSED_DIR"]
+
+DATA_RAW_DIR = CONFIG.get("FOLDERS","DATA_RAW_DIR",fallback="../../data/raw")
+DATA_INTERM_DIR = CONFIG.get("FOLDERS","DATA_INTERM_DIR",fallback="../../data/intermediate")
+DATA_PROCESSED_DIR = CONFIG.get("FOLDERS","DATA_PROCESSED_DIR",fallback="../../data/processed")
+
 
 
 

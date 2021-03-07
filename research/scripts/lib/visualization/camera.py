@@ -110,19 +110,27 @@ def take_photos(name,main_model,path=None,path_root=None):
 
 
 class predictOverVideoSim:
-    def __init__(self,data_folder,model,id_pic):
+    def __init__(self,data_folder,model,id_pic,cuda=False):
         self.s_data = init_data(data_folder)
         self.model = model
         self.x0 = self.s_data.process_img(id_pic).unsqueeze(0)
+        self.cuda = cuda
+        if cuda:
+            self.x0 = self.x0.cuda()
     def frame_to_pil(self,frame):
 
         return Image.fromarray(frame).convert("L")
 
-    def predict(self,frame):
+    def predict(self,frame,bbox=None):
         frame = self.frame_to_pil(frame)
+        if bbox is not None:
+            frame = frame.crop(bbox)
         x1 = self.s_data.process_img(frame).unsqueeze(0)
+        if self.cuda:
+            x1 = x1.cuda()
         preds = predict_model(self.model,self.x0,x1,plot=False)
         return preds
+    
 
 
 def write_text_over_img(img, text, font = cv2.FONT_HERSHEY_SIMPLEX, bottomLeftCornerOfText = (0,100),fontScale  = 2,

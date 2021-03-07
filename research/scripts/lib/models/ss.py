@@ -13,7 +13,8 @@ from torch.utils.data import DataLoader,Dataset
 
 CONFIG = load_config()
 
-DATA_VAL_DIR = CONFIG["FOLDERS"]["DATA_VAL"]
+DATA_VAL_DIR = CONFIG.get("FOLDERS","DATA_VAL",fallback="../../data/raw/faces/validation")
+
 
 
 class ContrastiveLoss(nn.Module):
@@ -243,7 +244,7 @@ class SiameseNetworkV2(pl.LightningModule):
 
 
 
-def train_network(net, train_dataloader,iteration_step=10,train_number_epochs = 20):
+def train_network(net, train_dataloader,iteration_step=10,train_number_epochs = 20,cuda=False):
     counter = []
     loss_history = []
     iteration_number= 0
@@ -251,8 +252,10 @@ def train_network(net, train_dataloader,iteration_step=10,train_number_epochs = 
     optimizer = optim.Adam(net.parameters(),lr = 0.0005 )
     for epoch in range(0,train_number_epochs):
         for i, data in enumerate(train_dataloader,0):
-            img0, img1 , label = data
-            #img0, img1 , label = img0.cuda(), img1.cuda() , label.cuda()
+            if cuda:
+                img0, img1 , label = img0.cuda(), img1.cuda() , label.cuda()
+            else:
+                img0, img1 , label = data
             optimizer.zero_grad()
             output1,output2 = net(img0,img1)
             loss_contrastive = criterion(output1,output2,label)
